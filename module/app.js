@@ -1,5 +1,9 @@
-// global.console.log(global);
-// global.console.log(module);
+// global.console.log("global: ",global);
+// global.console.log("module: ",module);
+// console.log("exports: ",exports);
+// console.log("require: ",require);
+// console.log("filename: ",__filename);
+// console.log("dirname: ",__dirname);
 
 // const calculator = require("./calculator");
 
@@ -17,4 +21,4 @@ console.log(div(1, 2));
 
 const foo = require("./singleExports");
 
-console.log(foo("123"));
+console.log(foo("foo"));

@@ -9,7 +9,12 @@
 // console.log(calculator.div(1, 2));
 
 const { add, sub, multi, div } = require("./calculator");
+
 console.log(add(1, 2));
 console.log(sub(1, 2));
 console.log(multi(1, 2));
 console.log(div(1, 2));
+
+const foo = require("./singleExports");
+
+console.log(foo("123"));

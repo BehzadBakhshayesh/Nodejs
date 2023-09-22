@@ -6,4 +6,4 @@ emmitter.on("myEvet", (e) => {
   console.log(e);
 });
 
-emmitter.emit("myEvet", { date: Date.now(), a: 1 });
+emmitter.emit("myEvet", { time: Date.now(), a: 1 });

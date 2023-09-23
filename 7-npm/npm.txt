@@ -1,0 +1,8 @@
+// npm list  ============> all dependencies
+// npm list --depth=0
+// npm i npm-check-updates -g
+// npm-check-updates --upgrade
+
+// dev dependencies : --save-dev
+
+remove package: npm un ......

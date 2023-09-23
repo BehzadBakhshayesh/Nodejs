@@ -14,6 +14,10 @@ app.get("/api/users", (req, res) => {
     { id: 3, name: "user3" },
   ]);
 });
+app.get("/api/users/:id", (req, res) => {
+  console.log(req.params);
+  res.send([{ id: req.params.id, name: `user${req.params.id}` }]);
+});
 
 // app.post();
 

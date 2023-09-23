@@ -8,6 +8,7 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 app.get("/api/users", (req, res) => {
+  console.log(req.query);
   res.send([
     { id: 1, name: "user1" },
     { id: 2, name: "user2" },

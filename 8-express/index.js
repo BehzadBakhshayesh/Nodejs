@@ -30,7 +30,6 @@ app.post(
   ],
   (req, res) => {
     const errors = validationResult(req);
-    console.log(errors);
     if (!errors.isEmpty()) {
       return res
         .status(400)
@@ -40,5 +39,41 @@ app.post(
     res.status(200).json({ data: users, errors, message: "ok" });
   }
 );
+app.put(
+  "/api/users/:id",
+  [
+    body("email", "email is invalid").isEmail(),
+    body("first_name", "first name can ot be empty").notEmpty(),
+  ],
+  (req, res) => {
+    const user = users.find((user) => user.id === Number(req.params.id));
+    if (!user) {
+      return res.status(404).json({ data: null, message: "User not found" });
+    }
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res
+        .status(400)
+        .json({ data: null, errors, message: "validation error" });
+    }
+    const newList = users.map((user) => {
+      if (user.id === Number(req.params.id)) {
+        return { ...user, ...req.body };
+      }
+      return user;
+    });
+    res.status(200).json({ data: newList, message: "ok" });
+  }
+);
+
+app.delete("/api/users/:id", (req, res) => {
+  const user = users.find((user) => user.id === Number(req.params.id));
+  if (!user) {
+    return res.status(404).json({ data: null, message: "User not found" });
+  }
+  const index = users.indexOf(user);
+  users.splice(index, 1);
+  res.json({ data: users, message: "ok" });
+});
 
 app.listen(port, () => console.log(`listening on port ${port}`));

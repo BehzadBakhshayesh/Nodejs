@@ -1,11 +1,22 @@
 let users = require("./usersList");
 const express = require("express");
 const { query, body, validationResult } = require("express-validator");
+const helmet = require("helmet");
+const morgan = require("morgan");
 
 const app = express();
 const port = process.env.PORT ?? 3000;
 
+console.log("NODE_ENV:", process.env.NODE_ENV);
+console.log('app.get("env"):', app.get("env"));
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
+app.use(helmet());
+if (app.get("env") === "development") {
+  app.use(morgan("tiny"));
+}
 
 app.use((req, res, next) => {
   console.log("mid1");

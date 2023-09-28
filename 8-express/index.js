@@ -3,9 +3,22 @@ const express = require("express");
 const { query, body, validationResult } = require("express-validator");
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT ?? 3000;
 
 app.use(express.json());
+
+app.use((req, res, next) => {
+  console.log("mid1");
+  req.body.abc = "abc";
+  req.user = { id: 1, name: "bhzd" };
+  // res.send("mid1");
+  next();
+});
+app.use((req, res, next) => {
+  console.log("mid2");
+  console.log(req.body, req.user);
+  next();
+});
 
 app.get("/api/users", [query("person").notEmpty()], (req, res) => {
   const result = validationResult(req);
@@ -14,6 +27,12 @@ app.get("/api/users", [query("person").notEmpty()], (req, res) => {
   }
   res.status(400).send({ errors: result.array() });
 });
+
+app.use((req, res, next) => {
+  console.log("mid3");
+  next();
+});
+
 app.get("/api/users/:id", (req, res) => {
   const user = users.find((user) => user.id === Number(req.params.id));
   if (!user) {

@@ -1,11 +1,20 @@
 let users = require("./usersList");
+const path = require("node:path");
 const express = require("express");
 const { query, body, validationResult } = require("express-validator");
 const helmet = require("helmet");
 const morgan = require("morgan");
+const config = require("config");
 
 const app = express();
-const port = process.env.PORT ?? 3000;
+const port = process.env.PORT ?? 5000;
+
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname + "/views"));
+
+// $env:NODE_ENV="development"
+// $env:NODE_ENV="production"
+// console.log(config.get("name"));
 
 console.log("NODE_ENV:", process.env.NODE_ENV);
 console.log('app.get("env"):', app.get("env"));
@@ -17,6 +26,10 @@ app.use(helmet());
 if (app.get("env") === "development") {
   app.use(morgan("tiny"));
 }
+
+app.get("/", (req, res) => {
+  res.render("home", { name: "bhzd" });
+});
 
 app.use((req, res, next) => {
   console.log("mid1");

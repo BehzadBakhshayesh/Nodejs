@@ -1,5 +1,6 @@
 const path = require("node:path");
 const express = require("express");
+const homeRoute = require("./routes/home");
 const usersRoute = require("./routes/users");
 
 const app = express();
@@ -12,10 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-app.get("/", (req, res) => {
-  res.render("home", { name: "bhzd" });
-});
-
+app.use("/", homeRoute);
 app.use("/api/users", usersRoute);
 
 app.listen(port, () => console.log(`listening on port ${port}`));

@@ -14,6 +14,8 @@ const userSchema = new Schema({
 
 const User = model("User", userSchema);
 
+// ==============================================================
+
 async function createUser() {
   const user = new User({
     fName: "BHZDD",
@@ -23,7 +25,14 @@ async function createUser() {
     date: Date.now(),
   });
   const result = await user.save();
-  console.log(result);
 }
-
 createUser();
+
+async function getUsers() {
+  const users = await User.find({ fName: "BHZD", admin: true })
+    .limit(3)
+    .sort({ fName: 1 })
+    .select({ fName: 1, lName: 1 })
+    .count();
+}
+getUsers();

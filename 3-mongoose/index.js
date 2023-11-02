@@ -124,3 +124,21 @@ async function updateUser2(id) {
 }
 
 updateUser2("6536daf6fe885df32623868c");
+
+// ==============================================================
+//removing docs
+
+async function removeUser1(id) {
+  const result = await User.deleteOne({ _id: id });
+}
+removeUser1("6536da ... f6fe885df32c");
+
+async function removeUser2() {
+  const result = await User.findByIdAndRemove(id);
+}
+removeUser2("6536da ... f6fe885df32c");
+
+async function removeUsers() {
+  const result = await User.deleteMany({ admin: false });
+}
+removeUsers();

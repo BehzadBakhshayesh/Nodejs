@@ -28,14 +28,14 @@ async function createUser() {
 }
 createUser();
 
-async function getUsers() {
+async function getUsers1() {
   const users = await User.find({ fName: "BHZD", admin: true })
     .limit(3)
     .sort({ fName: 1 })
     .select({ fName: 1, lName: 1 })
     .count();
 }
-getUsers();
+getUsers1();
 
 // ==============================================================
 // Comparison Query Operators
@@ -61,3 +61,66 @@ async function getUsers3() {
   const users3 = await User.find().or([{ fName: "BHZD" }, { admin: true }]); // (fName == "BHZD" || admin == true)
 }
 getUsers3();
+
+// ==============================================================
+//pagination
+
+async function getUsers4(pageSize, Pagenumber) {
+  const users = await User.find({ fName: "BHZD", admin: true })
+    .skip((Pagenumber - 1) * pageSize)
+    .limit(pageSize);
+}
+getUsers4(8, 1);
+getUsers4(8, 2);
+
+// ==============================================================
+//updating docs
+
+async function updateUser1(id) {
+  const user1 = await User.findById(id); //==>{}
+  const user2 = await User.findOne({ _id: id }); //==>{}
+  const user3 = await User.find({ _id: id }); //=>[{}]
+
+  if (!user1) {
+    return;
+  } else {
+    // user1.admin = true;
+    // user1.fName = "abcd";
+    //or
+    user1.set({ admin: true, fName: "abcd" });
+
+    const result = await user1.save();
+  }
+}
+updateUser1("6536daf6fe885df32623868c");
+
+async function updateUser2(id) {
+  // await User.update(
+  //   { _id: id },
+  //   {
+  //     $set: {
+  //       admin: true,
+  //       fName: "abcd",
+  //     },
+  //   }
+  // );
+
+  // const userBeforUpdate = await User.findByIdAndUpdate(id, {
+  //   $set: {
+  //     admin: true,
+  //     fName: "abcd",
+  //   },
+  // });
+  const userAfterUpdate = await User.findByIdAndUpdate(
+    id,
+    {
+      $set: {
+        admin: true,
+        fName: "abcd",
+      },
+    },
+    { new: true }
+  );
+}
+
+updateUser2("6536daf6fe885df32623868c");

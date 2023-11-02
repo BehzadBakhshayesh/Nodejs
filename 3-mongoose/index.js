@@ -134,7 +134,7 @@ async function removeUser1(id) {
 removeUser1("6536da ... f6fe885df32c");
 
 async function removeUser2() {
-  const result = await User.findByIdAndRemove(id);
+  const user = await User.findByIdAndRemove(id);
 }
 removeUser2("6536da ... f6fe885df32c");
 
@@ -142,3 +142,38 @@ async function removeUsers() {
   const result = await User.deleteMany({ admin: false });
 }
 removeUsers();
+
+// ==============================================================
+// validation
+const personSchema = new Schema({
+  fName: { type: String, minlength: 3, maxlength: 20 },
+  lName: {
+    type: String,
+    required: function () {
+      return this.admin;
+    },
+  },
+  admin: Boolean,
+  favorits: {
+    type: [String],
+    enum: ["sport", "music"],
+  },
+});
+
+const Person = model("person", personSchema);
+
+async function createPerson() {
+  const person = new Person({
+    fName: "abcd",
+    // lName: "efg",
+    admin: true,
+    favorits: ["sport"],
+  });
+
+  try {
+    const result = await person.save();
+  } catch (err) {
+    console.log(err);
+  }
+}
+createPerson();
